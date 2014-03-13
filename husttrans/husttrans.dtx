@@ -1,0 +1,527 @@
+% \iffalse meta-comment
+% !TEX program  = LuaLaTeX
+%
+% husttrans.dtx
+%
+% Copyright (C) 2013-2014 by Xu Cheng <xucheng@me.com>
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.3
+% of this license or (at your option) any later version.
+% The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+% and version 1.3 or later is part of all distributions of LaTeX
+% version 2005/12/01 or later.
+%
+% This work has the LPPL maintenance status `maintained'.
+%
+% The Current Maintainer of this work is Xu Cheng.
+%
+% This work consists of the files husttrans.dtx,
+% husttrans.ins and the derived file husttrans.cls 
+% along with its document and example files.
+%
+%
+% \fi
+%
+% \iffalse
+%<*driver>
+\ProvidesFile{husttrans.dtx}
+%</driver>
+%<class>\NeedsTeXFormat{LaTeX2e}[1999/12/01]
+%<class>\ProvidesClass{husttrans}
+%<*class>
+[2014/03/01 v1.0 A Translation Template for Huazhong University of Science and Technology]
+%</class>
+%
+%<*driver>
+\documentclass[12pt,a4paper,numbered,full]{l3doc}
+
+\usepackage{fontspec}
+\setmainfont[Ligatures={Common,TeX}]{Tex Gyre Pagella}
+\setsansfont[Ligatures={Common,TeX}]{Droid Sans}
+\setmonofont{CMU Typewriter Text}
+\defaultfontfeatures{Mapping=tex-text,Scale=MatchLowercase}
+
+\usepackage{luatexja-fontspec}
+\setmainjfont[BoldFont={AdobeHeitiStd-Regular},ItalicFont={AdobeKaitiStd-Regular}]{AdobeSongStd-Light}
+\setsansjfont{AdobeKaitiStd-Regular}
+\defaultjfontfeatures{JFM=kaiming}
+\newjfontfamily\KAI{AdobeKaitiStd-Regular}
+\newjfontfamily\FANGSONG{AdobeFangsongStd-Regular}
+
+\usepackage{interfaces-LaTeX}
+\changefont{linespread=1.2}
+
+\usepackage[top=1.2in,bottom=1.2in,left=1.5in,right=1in]{geometry}
+\pdfpagewidth=\paperwidth
+\pdfpageheight=\paperheight
+
+\usepackage{color}
+\usepackage[table]{xcolor}
+
+\definecolor{hyperreflinkred}{RGB}{128,23,31}
+\hypersetup{
+  unicode,
+  bookmarksnumbered=true,
+  bookmarksopen=true,
+  bookmarksopenlevel=0,
+  breaklinks=true,
+  colorlinks=true,
+  allcolors=hyperreflinkred,
+  linktoc=page,
+  plainpages=false,
+  pdfpagelabels=true,
+  pdfstartview={XYZ null null 1}
+}
+\usepackage{indentfirst}
+\setlength{\parindent}{2em}
+
+\usepackage{titlesec,titletoc}
+\usepackage[titles]{tocloft}
+\setcounter{tocdepth}{2}
+\setcounter{secnumdepth}{3}
+
+\usepackage{enumitem}
+\setlist{noitemsep,partopsep=0pt,topsep=.8ex}
+\setlist[1]{labelindent=\parindent}
+\setlist[enumerate,1]{label=\arabic*.,ref=\arabic*}
+\setlist[enumerate,2]{label*=\arabic*,ref=\theenumi.\arabic*}
+\setlist[enumerate,3]{label=\emph{\alph*}),ref=\theenumii\emph{\alph*}}
+
+\usepackage{listings}
+\definecolor{lstgreen}{rgb}{0,0.6,0}
+\definecolor{lstgray}{rgb}{0.5,0.5,0.5}
+\definecolor{lstmauve}{rgb}{0.58,0,0.82}
+\lstset{
+  basicstyle=\footnotesize\ttfamily\FANGSONG,
+  keywordstyle=\color{blue}\bfseries,
+  commentstyle=\color{lstgreen}\itshape\KAI,
+  stringstyle=\color{lstmauve},
+  showspaces=false,
+  showstringspaces=false,
+  showtabs=false,
+  numbers=left,
+  numberstyle=\tiny\color{lstgray},
+  frame=lines,
+  rulecolor=\color{black},
+  breaklines=true
+}
+
+\AtBeginEnvironment{verbatim}{\small}
+\let\AltMacroFont\MacroFont
+
+\usepackage{metalogo}
+\usepackage{notes}
+\usepackage{tabularx}
+
+\newcommand{\tabincell}[2]{\begin{tabular}{@{}#1@{}}#2\end{tabular}}
+
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
+\setlength{\cftsecindent}{2em}
+\setlength{\cftsubsecindent}{4em}
+\makeatletter
+\newskip\HUST@oldcftbeforepartskip
+\HUST@oldcftbeforepartskip=\cftbeforepartskip
+\newskip\HUST@oldcftbeforesecskip
+\HUST@oldcftbeforesecskip=\cftbeforesecskip
+\let\HUST@oldl@part\l@part
+\let\HUST@oldl@section\l@section
+\let\HUST@oldl@subsection\l@subsection
+\def\l@part#1#2{\HUST@oldl@part{#1}{#2}\cftbeforepartskip=3pt}
+\def\l@section#1#2{\HUST@oldl@section{#1}{#2}\cftbeforepartskip=\HUST@oldcftbeforepartskip\cftbeforesecskip=3pt}
+\def\l@subsection#1#2{\HUST@oldl@subsection{#1}{#2}\cftbeforesecskip=\HUST@oldcftbeforesecskip}
+\makeatother
+
+\titleformat{\part}
+  {
+    \bfseries           
+    \centering               
+    \changefont{size=18pt}  
+  }
+  {\thepart}
+  {1em}
+  {}
+\let\oldpart\part
+\def\part#1{\newpage\oldpart{#1}}
+
+\def\orvar{\textnormal{|}}
+
+\IndexPrologue
+ {
+  \part{Index}
+  The~italic~numbers~denote~the~pages~where~the~
+  corresponding~entry~is~described,~
+  numbers~underlined~point~to~the~definition,~
+  all~others~indicate~the~places~where~it~is~used.
+ }
+
+\EnableCrossrefs
+\CodelineIndex
+\RecordChanges
+
+\def\email#1{
+  \href{mailto:#1}{\texttt{#1}}
+}
+
+\usepackage{xparse}
+\ExplSyntaxOn
+\DeclareDocumentCommand\pkgurl{o m}
+{
+    \IfNoValueTF{#1}
+    {
+        \href
+        {
+        http://mirrors.ctan.org/help/Catalogue/entries/
+        \tl_expandable_lowercase:n {#2} .html
+        }
+        { \textsf{#2} }
+    }
+    {
+        \href
+        {
+        http://mirrors.ctan.org/help/Catalogue/entries/
+        \tl_expandable_lowercase:n {#1} .html
+        }
+        { \textsf{#2} }
+    }
+}
+\ExplSyntaxOff
+
+\begin{document}
+\DocInput{husttrans.dtx}
+\end{document}
+%</driver>
+% \fi
+%
+% \CheckSum{0}
+%
+% \iffalse
+%<*!(example-bib)>
+% \fi
+%% \CharacterTable
+%% {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
+%%  Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
+%%  Digits        \0\1\2\3\4\5\6\7\8\9
+%%  Exclamation   \!     Double quote  \"     Hash (number) \#
+%%  Dollar        \$     Percent       \%     Ampersand     \&
+%%  Acute accent  \'     Left paren    \(     Right paren   \)
+%%  Asterisk      \*     Plus          \+     Comma         \,
+%%  Minus         \-     Point         \.     Solidus       \/
+%%  Colon         \:     Semicolon     \;     Less than     \<
+%%  Equals        \=     Greater than  \>     Question mark \?
+%%  Commercial at \@     Left bracket  \[     Backslash     \\
+%%  Right bracket \]     Circumflex    \^     Underscore    \_
+%%  Grave accent  \`     Left brace    \{     Vertical bar  \|
+%%  Right brace   \}     Tilde         \~}
+% \iffalse
+%</!(example-bib)>
+% \fi
+%
+% \changes{v1.0}{2014/03/01}{Initial version}
+%
+% \GetFileInfo{husttans.dtx}
+
+%
+% \DoNotIndex{\#,\$,\%,\&,\@,\\,\{,\},\^,\_,\~,\ ,\,}
+% \DoNotIndex{\def,\if,\else,\fi,\gdef,\long,\let}
+% \DoNotIndex{\@ne,\@nil}
+% \DoNotIndex{\begingroup,\endgroup,\advance}
+% \DoNotIndex{\newcommand,\renewcommand}
+% \DoNotIndex{\newenvironment,\renewenvironment}
+% \DoNotIndex{\RequirePackage}
+%
+% \title{A Translation Template for Huazhong University of Science and Technology: the \textsf{husttrans} class
+% \thanks{This document corresponds to \textsf{husttrans.cls}~\fileversion, dated \filedate.}}
+% \author{Xu Cheng \\ \email{xucheng@me.com}}
+% \date{2013/07/01}
+%
+% \begingroup
+% \hypersetup{allcolors=black}
+% \maketitle
+% \endgroup
+% \tableofcontents
+%
+% \part{Introduction}
+%
+%
+%
+% \StopEventually{
+%  \PrintIndex
+% }
+%
+% \part{Implementation}\label{part:Implementation}
+%
+%    \begin{macrocode}
+%<*class>
+\RequirePackage{ifthen}
+%    \end{macrocode}
+%
+% \section{Process Options}
+% Use \pkgurl{xkeyval} to process options.
+%    \begin{macrocode}
+\RequirePackage{xkeyval}
+%    \end{macrocode}
+%
+% Process options and load class |book|.
+%    \begin{macrocode}
+\DeclareOption*{\PassOptionsToClass{\CurrentOption}{book}}
+\ProcessOptionsX
+\LoadClass[12pt, a4paper, openany]{book}
+%    \end{macrocode}
+%
+% \section{Check Engine}
+% Check engine, only \XeLaTeX{} and \LuaLaTeX{} are supported.
+%    \begin{macrocode}
+\RequirePackage{iftex}
+\ifXeTeX\else
+  \ifLuaTeX\else
+    \begingroup
+      \errorcontextlines=-1\relax
+      \newlinechar=10\relax
+      \errmessage{^^J
+      *******************************************************^^J
+      * XeTeX or LuaTeX is required to compile this document.^^J
+      * Sorry!^^J
+      *******************************************************^^J
+      }%
+    \endgroup
+  \fi
+\fi
+%    \end{macrocode}
+%
+% \section{Font Setting}
+% Set font used in document. Firstly, it's English font. We use \pkgurl{fontspec} package to handle font. We choose \textsf{Tex Gyre Termes}, \textsf{Droid Sans} and \textsf{CMU Typewriter Text} as document main font, sans font and mono font.
+%
+% Then it's the Chinese font setting. We use \pkgurl{xecjk} package (for \XeLaTeX) or \pkgurl[luatexja]{luatex-ja} package (for \LuaLaTeX, recommend) to handle Chinese font. We will use font: \textsf{AdobeSongStd-Light}, \textsf{AdobeKaitiStd-Regular}, \textsf{AdobeHeitiStd-Regular} and \textsf{AdobeFangsongStd-Regular}.
+%    \begin{macrocode}
+\ifXeTeX  % XeTeX下使用fontspec + xeCJK处理字体
+  % 英文字体
+  \RequirePackage{fontspec}
+  \RequirePackage{xunicode}
+  \setmainfont[
+    Ligatures={Common,TeX},
+    Extension=.otf,
+    UprightFont=*-regular,
+    BoldFont=*-bold,
+    ItalicFont=*-italic,
+    BoldItalicFont=*-bolditalic]{texgyretermes}
+  \setsansfont[Ligatures={Common,TeX}]{Droid Sans}
+  \setmonofont{CMU Typewriter Text}
+  \defaultfontfeatures{Mapping=tex-text}
+  % 中文字体
+  \RequirePackage[CJKmath]{xeCJK}
+  \setCJKmainfont[
+   BoldFont={Adobe Heiti Std},
+   ItalicFont={Adobe Kaiti Std}]{Adobe Song Std}
+  \setCJKsansfont{Adobe Kaiti Std}
+  \setCJKmonofont{Adobe Fangsong Std}
+  \xeCJKsetup{PunctStyle=kaiming}
+
+  \newcommand\ziju[2]{{\renewcommand{\CJKglue}{\hskip #1} #2}}
+%    \end{macrocode}
+%
+% \begin{macro}{\HEI}
+%    \begin{macrocode}
+  \newCJKfontfamily\HEI{Adobe Heiti Std}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\KAI}
+%    \begin{macrocode}
+  \newCJKfontfamily\KAI{Adobe Kaiti Std}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\FANGSONG}
+%    \begin{macrocode}
+  \newCJKfontfamily\FANGSONG{Adobe Fangsong Std}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\hei}
+%    \begin{macrocode}
+  \newcommand{\hei}[1]{{\HEI #1}}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\kai}
+%    \begin{macrocode}
+  \newcommand{\kai}[1]{{\KAI #1}}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\fangsong}
+%    \begin{macrocode}
+  \newcommand{\fangsong}[1]{{\FANGSONG #1}}
+%    \end{macrocode}
+% \end{macro}
+%
+%    \begin{macrocode}
+\else\fi
+\ifLuaTeX  % LuaTeX下使用luatex-ja处理字体 [推荐]
+  \RequirePackage{luatexja-fontspec}
+  % 英文字体
+  \setmainfont[Ligatures={Common,TeX}]{Tex Gyre Termes}
+  \setsansfont[Ligatures={Common,TeX}]{Droid Sans}
+  \setmonofont{CMU Typewriter Text}
+  \defaultfontfeatures{Mapping=tex-text,Scale=MatchLowercase}
+  % 中文字体
+  \setmainjfont[
+   BoldFont={AdobeHeitiStd-Regular},
+   ItalicFont={AdobeKaitiStd-Regular}]{AdobeSongStd-Light}
+  \setsansjfont{AdobeKaitiStd-Regular}
+  \defaultjfontfeatures{JFM=kaiming}
+
+  \newcommand\ziju[2]{\vbox{\ltjsetparameter{kanjiskip=#1} #2}}
+%    \end{macrocode}
+%
+% \begin{macro}{\HEI}
+%    \begin{macrocode}
+  \newjfontfamily\HEI{AdobeHeitiStd-Regular}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\KAI}
+%    \begin{macrocode}
+  \newjfontfamily\KAI{AdobeKaitiStd-Regular}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\FANGSONG}
+%    \begin{macrocode}
+  \newjfontfamily\FANGSONG{AdobeFangsongStd-Regular}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\hei}
+%    \begin{macrocode}
+  \newcommand{\hei}[1]{{\jfontspec{AdobeHeitiStd-Regular} #1}}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\kai}
+%    \begin{macrocode}
+  \newcommand{\kai}[1]{{\jfontspec{AdobeKaitiStd-Regular} #1}}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\fangsong}
+%    \begin{macrocode}
+  \newcommand{\fangsong}[1]{{\jfontspec{AdobeFangsongStd-Regular} #1}}
+%    \end{macrocode}
+% \end{macro}
+%
+%    \begin{macrocode}
+\else\fi
+%    \end{macrocode}
+%
+% Generate Chinese number using \pkgurl{zhnumber}.
+%    \begin{macrocode}
+\RequirePackage{zhnumber}
+\def\CJKnumber#1{\zhnumber{#1}} % 兼容CJKnumb
+%    \end{macrocode}
+%
+% \section{Basic Format}
+% Use \pkgurl{interfaces} package to handle font size and line spread. We set global line spread to 1.3.
+%    \begin{macrocode}
+\RequirePackage{interfaces-LaTeX}
+\changefont{linespread=1.3}
+%    \end{macrocode}
+%
+% Use \pkgurl{geometry} package to handle paper page.
+%    \begin{macrocode}
+\RequirePackage{geometry}
+\geometry{
+  a4paper,
+  top=1.2in,
+  bottom=1.2in,
+  left=1in,
+  right=1in,
+  includefoot
+}
+\pdfpagewidth=\paperwidth
+\pdfpageheight=\paperheight
+%    \end{macrocode}
+%
+% Indent of paragraph and skip between paragraphs.
+%    \begin{macrocode}
+\RequirePackage{indentfirst}
+\setlength{\parindent}{2em}
+\setlength{\parskip}{0pt plus 2pt minus 1pt} 
+%    \end{macrocode}
+%
+% Packages to handle color.
+%    \begin{macrocode}
+\RequirePackage{color}
+\RequirePackage[table]{xcolor}
+%    \end{macrocode}
+%
+% Use \pkgurl{hyperref} package to generate cross-reference link.
+%    \begin{macrocode}
+\RequirePackage[unicode]{hyperref}
+\hypersetup{
+  bookmarksnumbered=true,
+  bookmarksopen=true,
+  bookmarksopenlevel=1,
+  breaklinks=true,
+  colorlinks=true,
+  allcolors=black,
+  linktoc=all,
+  plainpages=false,
+  pdfpagelabels=true,
+  pdfstartview={XYZ null null 1},
+  pdfinfo={Template.Info={husttrans.cls v1.0 2013/07/01, Copyright (C) 2013-2014 by Xu Cheng, https://github.com/xu-cheng/husttrans}}
+}
+%    \end{macrocode}
+%
+% \section{Load Packages}
+% Load packages for math.
+%    \begin{macrocode}
+\RequirePackage{amsmath,amssymb,amsfonts}
+\RequirePackage[amsmath,amsthm,thmmarks,hyperref,thref]{ntheorem}
+\RequirePackage{fancynum}
+\setfnumgsym{\,}
+\RequirePackage[lined,boxed,linesnumbered,ruled,vlined,algochapter]{algorithm2e}
+%    \end{macrocode}
+%
+% Load packages for picture.
+%    \begin{macrocode}
+\RequirePackage[all]{xy}
+\RequirePackage{overpic}
+\RequirePackage{graphicx,caption,subcaption}
+%    \end{macrocode}
+%
+% Load packages for table.
+%    \begin{macrocode}
+\RequirePackage{array}
+\RequirePackage{multirow,tabularx,ltxtable}
+%    \end{macrocode}
+%
+% Load package for code highlight. Here we use \pkgurl{listings} to highlight the code. But if you need more features, use \pkgurl{minted}.
+%    \begin{macrocode}
+\RequirePackage{listings}
+%    \end{macrocode}
+%
+% Load package for bibliography cite style.
+%    \begin{macrocode}
+\RequirePackage[numbers,square,comma,super,sort&compress]{natbib}
+%    \end{macrocode}
+%
+% Other packages for style setting.
+%    \begin{macrocode}
+\RequirePackage{titlesec}
+\RequirePackage{titletoc}
+\RequirePackage{tocvsec2}
+\RequirePackage[inline]{enumitem}
+\RequirePackage{fancyhdr}
+\RequirePackage{afterpage}
+\RequirePackage{datenumber}
+\RequirePackage{etoolbox}
+\RequirePackage{appendix}
+\RequirePackage[titles]{tocloft}
+\RequirePackage{xstring}
+\RequirePackage{perpage}
+%    \end{macrocode}
+%
+% \section{Variables Setting}
