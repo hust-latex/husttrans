@@ -525,3 +525,337 @@
 %    \end{macrocode}
 %
 % \section{Variables Setting}
+% 
+%
+% \section{Localization}\label{sec:Localization}
+% Chinese localization.
+% \footnote{The |autorefname| Reference:\url{http://tex.stackexchange.com/questions/52410/how-to-use-the-command-autoref-to-implement-the-same-effect-when-use-the-comman}}
+%    \begin{macrocode}
+\def\indexname{索引}
+\def\figurename{图}
+\def\tablename{表}
+\AtBeginDocument{\def\listingscaption{代码}}
+\def\bibname{参考文献}
+\def\contentsname{目\hspace{1em}录}
+\def\contentsnamenospace{目录}
+\def\appendixname{附录}
+\def\HUST@listfigurename{插图索引}
+\def\HUST@listtablename{表格索引}  
+\def\equationautorefname{公式}
+\def\footnoteautorefname{脚注}
+\def\itemautorefname~#1\null{第~#1~项\null}
+\def\figureautorefname{图}
+\def\tableautorefname{表}
+\def\appendixautorefname{附录}
+\expandafter\def\csname\appendixname autorefname\endcsname{\appendixname}
+\def\chapterautorefname~#1\null{第\zhnumber{#1}章\null}
+\def\sectionautorefname~#1\null{#1~小节\null}
+\def\subsectionautorefname~#1\null{#1~小节\null}
+\def\subsubsectionautorefname~#1\null{#1~小节\null}
+\def\FancyVerbLineautorefname~#1\null{第~#1~行\null}
+\def\pageautorefname~#1\null{第~#1~页\null}
+\def\lstlistingautorefname{代码}
+\def\definitionautorefname{定义}
+\def\propositionautorefname{命题}
+\def\lemmaautorefname{引理}
+\def\theoremautorefname{定理}
+\def\axiomautorefname{公理}
+\def\corollaryautorefname{推论}
+\def\exerciseautorefname{练习}
+\def\exampleautorefname{例}
+\def\proofautorefname{证明}
+\SetAlgorithmName{算法}{算法}{算法索引}
+\SetAlgoProcName{过程}{过程}
+\SetAlgoFuncName{函数}{函数}
+\def\AlgoLineautorefname~#1\null{第~#1~行\null}
+%    \end{macrocode}
+%
+% Internal variables.
+%    \begin{macrocode}
+%    \end{macrocode}
+%
+% Set |\listfigurename| and |\listtablename|.
+%    \begin{macrocode}
+\def\listfigurename{\HUST@listfigurename}
+\def\listtablename{\HUST@listtablename}
+%    \end{macrocode}
+%
+% \section{Style Setting}
+% \subsection{Equation Style}
+% Allow long equation breaking between lines or pages.
+%    \begin{macrocode}
+\allowdisplaybreaks[4]
+%    \end{macrocode}
+%
+% Set skip between equation and context.
+%    \begin{macrocode}
+\abovedisplayskip=10bp plus 2bp minus 2bp
+\abovedisplayshortskip=10bp plus 2bp minus 2bp
+\belowdisplayskip=\abovedisplayskip
+\belowdisplayshortskip=\abovedisplayshortskip
+%    \end{macrocode}
+%
+% Set equation numbering style.
+%    \begin{macrocode}
+\numberwithin{equation}{chapter}
+%    \end{macrocode}
+%
+% \subsection{Theorem Style}
+% We use \pkgurl{amsthm} to handle the proof environment and use \pkgurl{ntheorem} to handle other theorem environments.
+%    \begin{macrocode}
+\theoremnumbering{arabic}
+\ifthenelse{\equal{\HUST@language}{chinese}}{
+  \theoremseparator{：}
+}{
+  \theoremseparator{:}
+}
+\theorempreskip{1.2ex plus 0ex minus 1ex}
+\theorempostskip{1.2ex plus 0ex minus 1ex}
+\theoremheaderfont{\normalfont\bfseries\HEI}
+\theoremsymbol{}
+
+\theoremstyle{definition}
+\theorembodyfont{\normalfont}
+\ifthenelse{\equal{\HUST@language}{chinese}}{
+  \newtheorem{definition}{定义}[chapter]
+}{
+  \newtheorem{definition}{Definition}[chapter]
+}
+
+\theoremstyle{plain}
+\theorembodyfont{\itshape}
+\newtheorem{proposition}{命题}[chapter]
+\newtheorem{lemma}{引理}[chapter]
+\newtheorem{theorem}{定理}[chapter]
+\newtheorem{axiom}{公理}[chapter]
+\newtheorem{corollary}{推论}[chapter]
+\newtheorem{exercise}{练习}[chapter]
+\newtheorem{example}{例}[chapter]
+\def\proofname{\hei{证明}}
+%    \end{macrocode}
+%
+% \subsection{Floating Objects Style}
+% Set the skip to the context for floating object with argument `h'.
+%    \begin{macrocode}
+\setlength{\intextsep}{0.7\baselineskip plus 0.1\baselineskip minus 0.1\baselineskip}
+%    \end{macrocode}
+%
+% Set the skip to the context for top or bottom floating object.
+%    \begin{macrocode}
+\setlength{\textfloatsep}{0.8\baselineskip plus 0.1\baselineskip minus 0.2\baselineskip}
+%    \end{macrocode}
+%
+% Set the fraction of floating object. Make the fraction less crowded than default value to prevent floating object occupying too much space.
+%    \begin{macrocode}
+\renewcommand{\textfraction}{0.15} 
+\renewcommand{\topfraction}{0.85} 
+\renewcommand{\bottomfraction}{0.65} 
+\renewcommand{\floatpagefraction}{0.60} 
+%    \end{macrocode}
+%
+% \subsection{Table Style}
+%
+% \begin{macro}{\tabincell}
+% A command make it easier to insert a new table into an existing cell.
+%    \begin{macrocode}
+\newcommand{\tabincell}[2]{\begin{tabular}{@{}#1@{}}#2\end{tabular}}
+%    \end{macrocode}
+% \end{macro}
+%
+% To prevent |\cline| breaking page in \pkgurl{longtable} environment, use in this way:
+% \meta{table content} |\\* \nopagebreak \cline{i-j}|
+% \footnote{Reference:\url{http://tex.stackexchange.com/questions/52100/longtable-multirow-problem-with-cline-and-nopagebreak}}
+%    \begin{macrocode}
+\def\@cline#1-#2\@nil{%
+  \omit
+  \@multicnt#1%
+  \advance\@multispan\m@ne
+  \ifnum\@multicnt=\@ne\@firstofone{&\omit}\fi
+  \@multicnt#2%
+  \advance\@multicnt-#1%
+  \advance\@multispan\@ne
+  \leaders\hrule\@height\arrayrulewidth\hfill
+  \cr
+  \noalign{\nobreak\vskip-\arrayrulewidth}}
+%    \end{macrocode}
+%
+% Here we set the global font setting (font size: 11pt and line spread: 1.4) for tables. But first we will declare a variable to determine whether table global font setting is activated.
+%    \begin{macrocode}
+\newif\ifHUST@useoldtabular
+\HUST@useoldtabularfalse
+%    \end{macrocode}
+%
+% \begin{macro}{\TurnOffTabFontSetting}
+% Use |\TurnOffTabFontSetting| to deactivate global font setting.
+%    \begin{macrocode}
+\def\TurnOffTabFontSetting{\HUST@useoldtabulartrue}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\TurnOnTabFontSetting}
+% Use |\TurnOnTabFontSetting| to activate global font setting.
+%    \begin{macrocode}
+\def\TurnOnTabFontSetting{\HUST@useoldtabularfalse}
+%    \end{macrocode}
+% \end{macro}
+%
+% Hook the \pkgurl{tabular}, \pkgurl{tabularx} and \pkgurl{longtable} environment to imply the global font setting.
+%    \begin{macrocode}
+\AtBeginEnvironment{tabular}{
+  \ifHUST@useoldtabular\else
+    \changefont{size=11pt,linespread=1.4}
+  \fi
+}
+\AtBeginEnvironment{tabularx}{
+  \ifHUST@useoldtabular\else
+    \changefont{size=11pt,linespread=1.4}
+  \fi
+}
+\AtBeginEnvironment{longtable}{
+  \ifHUST@useoldtabular\else
+    \changefont{size=11pt,linespread=1.4}
+  \fi
+}
+%    \end{macrocode}
+%
+% \subsection{Caption Style}
+% Set caption font size as 11pt, use hang format, remove `:' after number and set the skip between context as 12pt.
+%    \begin{macrocode}
+\DeclareCaptionFont{HUST@captionfont}{\changefont{size=11pt}}
+\DeclareCaptionLabelFormat{HUST@caplabel}{#1~#2}
+\captionsetup{
+  font=HUST@captionfont,
+  labelformat=HUST@caplabel,
+  format=hang,
+  labelsep=quad,
+  skip=12pt
+}
+%    \end{macrocode}
+%
+% Set figure and table numbering style.
+%    \begin{macrocode}
+\renewcommand{\thetable}{\arabic{chapter}.\arabic{table}}
+\renewcommand{\thefigure}{\arabic{chapter}-\arabic{figure}}
+%    \end{macrocode}
+%
+% \subsection{Code Highlight Style}
+%    \begin{macrocode}
+\definecolor{HUST@lstgreen}{rgb}{0,0.6,0}
+\definecolor{HUST@lstmauve}{rgb}{0.58,0,0.82}
+
+\lstset{
+  basicstyle=\footnotesize\ttfamily\changefont{linespread=1}\FANGSONG,
+  keywordstyle=\color{blue}\bfseries,
+  commentstyle=\color{HUST@lstgreen}\itshape\KAI,
+  stringstyle=\color{HUST@lstmauve},
+  showspaces=false,
+  showstringspaces=false,
+  showtabs=false,
+  numbers=left,
+  numberstyle=\tiny\color{black},
+  frame=lines,
+  rulecolor=\color{black},
+  breaklines=true
+}
+%    \end{macrocode}
+%
+% \subsection{Section Title Style}
+% Set the numbering depth for section.
+%    \begin{macrocode}
+\setcounter{secnumdepth}{3}
+%    \end{macrocode}
+%
+% Chapter tilte format and spacing setting.
+%    \begin{macrocode}
+\titleformat{\chapter}
+  {
+    \bfseries
+    \HEI
+    \centering
+    \changefont{size=18pt}
+  }
+  {
+    \ifthenelse{\equal{\HUST@language}{chinese}}
+    {\zhnumber{\thechapter}}
+    {Chapter~\thechapter}
+  }
+  {1em}
+  {}
+\titlespacing*{\chapter}{0pt}{0pt}{20pt}
+%    \end{macrocode}
+%
+% Section tilte format and spacing setting.
+%    \begin{macrocode}
+\titleformat*{\section}{\bfseries\HEI\changefont{size=16pt}}
+\titlespacing*{\section}{0pt}{18pt}{6pt}
+%    \end{macrocode}
+%
+% Subsection tilte format and spacing setting.
+%    \begin{macrocode}
+\titleformat*{\subsection}{\bfseries\HEI\changefont{size=14pt}}
+\titlespacing*{\subsection}{0pt}{12pt}{6pt}
+%    \end{macrocode}
+%
+% Subsubsection tilte format and spacing setting.
+%    \begin{macrocode}
+\titleformat*{\subsubsection}{\bfseries\HEI\changefont{size=13pt}}
+\titlespacing*{\subsubsection}{0pt}{12pt}{6pt}
+%    \end{macrocode}
+%
+% \subsection{TOC Style}
+% TOC depth.
+%    \begin{macrocode}
+\setcounter{tocdepth}{1}
+%    \end{macrocode}
+%
+% TOC right margin.
+%    \begin{macrocode}
+\contentsmargin{2.0em}
+%    \end{macrocode}
+%
+% Remove vertical space between two continues chapter entries.
+% \footnote{Reference:\url{http://tex.stackexchange.com/questions/89103/remove-vertical-space-between-two-chapters-in-table-of-contents-in-latex}}
+%    \begin{macrocode}
+\newskip\HUST@oldcftbeforechapskip
+\HUST@oldcftbeforechapskip=\cftbeforechapskip
+\newskip\HUST@oldcftbeforesecskip
+\HUST@oldcftbeforesecskip=\cftbeforesecskip
+\let\HUST@oldl@chapter\l@chapter
+\let\HUST@oldl@section\l@section
+\let\HUST@oldl@subsection\l@subsection
+\def\l@chapter#1#2{\HUST@oldl@chapter{#1}{#2}\cftbeforechapskip=3pt}
+\def\l@section#1#2{\HUST@oldl@section{#1}{#2}\cftbeforechapskip=\HUST@oldcftbeforechapskip\cftbeforesecskip=3pt}
+\def\l@subsection#1#2{\HUST@oldl@subsection{#1}{#2}\cftbeforesecskip=\HUST@oldcftbeforesecskip}
+%    \end{macrocode}
+%
+% Set LOF LOT style.
+% \footnote{Reference:\url{http://www.latex-community.org/viewtopic.php?f=5&t=1838}}
+%    \begin{macrocode}
+\renewcommand*\cftfigpresnum{\figurename~}
+\newlength{\HUST@cftfignumwidth@tmp}
+\settowidth{\HUST@cftfignumwidth@tmp}{\cftfigpresnum}
+\addtolength{\cftfignumwidth}{\HUST@cftfignumwidth@tmp}
+\renewcommand{\cftfigaftersnumb}{\quad~}
+\renewcommand*\cfttabpresnum{\tablename~}
+\newlength{\HUST@cfttabnumwidth@tmp}
+\settowidth{\HUST@cfttabnumwidth@tmp}{\cfttabpresnum}
+\addtolength{\cfttabnumwidth}{\HUST@cfttabnumwidth@tmp}
+\renewcommand{\cfttabaftersnumb}{\quad~}
+%    \end{macrocode}
+%
+% \subsection{List Environment Style}
+%    \begin{macrocode}
+\setlist{noitemsep,partopsep=0pt,topsep=.8ex}
+\setlist[1]{labelindent=\parindent}
+\setlist[enumerate,1]{label=\arabic*.,ref=\arabic*}
+\setlist[enumerate,2]{label*=\arabic*,ref=\theenumi.\arabic*}
+\setlist[enumerate,3]{label=\emph{\alph*}),ref=\theenumii\emph{\alph*}}
+\setlist[description]{font=\bfseries\HEI}
+%    \end{macrocode}
+%
+% \subsection{Footnote Style}
+%    \begin{macrocode}
+\MakePerPage{footnote}
+%    \end{macrocode}
+%
+% \section{Specical Page}
