@@ -604,11 +604,7 @@
 % We use \pkgurl{amsthm} to handle the proof environment and use \pkgurl{ntheorem} to handle other theorem environments.
 %    \begin{macrocode}
 \theoremnumbering{arabic}
-\ifthenelse{\equal{\HUST@language}{chinese}}{
-  \theoremseparator{：}
-}{
-  \theoremseparator{:}
-}
+\theoremseparator{：}
 \theorempreskip{1.2ex plus 0ex minus 1ex}
 \theorempostskip{1.2ex plus 0ex minus 1ex}
 \theoremheaderfont{\normalfont\bfseries\HEI}
@@ -616,11 +612,7 @@
 
 \theoremstyle{definition}
 \theorembodyfont{\normalfont}
-\ifthenelse{\equal{\HUST@language}{chinese}}{
-  \newtheorem{definition}{定义}[chapter]
-}{
-  \newtheorem{definition}{Definition}[chapter]
-}
+\newtheorem{definition}{定义}[chapter]
 
 \theoremstyle{plain}
 \theorembodyfont{\itshape}
@@ -775,9 +767,7 @@
     \changefont{size=18pt}
   }
   {
-    \ifthenelse{\equal{\HUST@language}{chinese}}
-    {\zhnumber{\thechapter}}
-    {Chapter~\thechapter}
+    \zhnumber{\thechapter}
   }
   {1em}
   {}
@@ -843,6 +833,11 @@
 \renewcommand{\cfttabaftersnumb}{\quad~}
 %    \end{macrocode}
 %
+% \subsection{Head \& Foot Style}
+%    \begin{macrocode}
+\pagestyle{empty}
+%    \end{macrocode}
+%
 % \subsection{List Environment Style}
 %    \begin{macrocode}
 \setlist{noitemsep,partopsep=0pt,topsep=.8ex}
@@ -859,3 +854,355 @@
 %    \end{macrocode}
 %
 % \section{Specical Page}
+%
+% \begin{macro}{\frontmatter,\mainmatter,\backmatter}
+%    \begin{macrocode}
+\def\frontmatter{
+  \clearpage
+  \@mainmatterfalse
+  \pagenumbering{Roman}
+}
+\def\mainmatter{
+  \clearpage
+  \@mainmattertrue
+  \pagenumbering{arabic}
+}
+\def\backmatter{
+  \clearpage
+  \@mainmatterfalse
+  \settocdepth{chapter}
+  \hypersetup{bookmarksopenlevel=0}
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\tableofcontents}
+% A command to generate table of contents.
+%    \begin{macrocode}
+\let\HUST@tableofcontents\tableofcontents
+\def\tableofcontents{
+  \pdfbookmark{\contentsnamenospace}{\contentsnamenospace}
+  \HUST@tableofcontents
+  \clearpage
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\bibliography}
+% A command to generate bibliography page.
+%    \begin{macrocode}
+\def\thudot{\unskip.}
+\def\thumasterbib{[Master Thesis]}
+\def\thuphdbib{[Doctor Thesis]}
+\bibliographystyle{thubib}
+\let\HUST@bibliography\bibliography
+\def\bibliography#1{
+  \clearpage
+  \phantomsection
+  \addcontentsline{toc}{chapter}{\bibname}
+  \begingroup
+  \changefont{size=10.5pt,linespread=1}
+  \setlength\bibsep{0.5ex} 
+  \HUST@bibliography{#1}
+  \endgroup
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{environment}{appendix}
+% The appendix environment.
+%    \begin{macrocode}
+\newif\ifHUST@inappendix
+\HUST@inappendixfalse
+\newif\ifHUST@appendix@resetmainmatter
+\HUST@appendix@resetmainmatterfalse
+\renewenvironment{appendix}{
+  \if@mainmatter
+    \HUST@appendix@resetmainmatterfalse
+  \else
+    \HUST@appendix@resetmainmattertrue
+    \@mainmattertrue
+  \fi
+  \appendixtitletocon
+  \appendices
+  \titleformat{\chapter}
+  {
+    \bfseries\HEI
+    \centering
+    \changefont{size=18pt}
+  }
+  {\appendixname\,\thechapter} 
+  {1em}
+  {}
+  \HUST@inappendixtrue
+}{
+  \endappendices
+  \HUST@inappendixfalse
+  \ifHUST@appendix@resetmainmatter
+    \HUST@appendix@resetmainmatterfalse
+    \@mainmatterfalse
+  \else\fi
+}
+%    \end{macrocode}
+% \end{environment}
+%
+% \begin{macro}{\listoffigures}
+% A command to generate list of figures.
+%    \begin{macrocode}
+\let\HUST@listoffigures\listoffigures
+\def\listoffigures{
+  \clearpage
+  \ifHUST@inappendix
+    \addtocounter{chapter}{1}
+    \def\listfigurename{\appendixname\,\thechapter\hspace{1em}\HUST@listfigurename}
+  \else
+    \def\listfigurename{\HUST@listfigurename}
+  \fi
+  \phantomsection
+  \ifHUST@inappendix
+    \addcontentsline{toc}{chapter}{\thechapter\hspace{1em}\HUST@listfigurename}
+  \else
+    \addcontentsline{toc}{chapter}{\listfigurename}
+  \fi
+  \HUST@listoffigures
+  \def\listfigurename{\HUST@listfigurename}
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\listoftables}
+% A command to generate list of tables.
+%    \begin{macrocode}
+\let\HUST@listoftables\listoftables
+\def\listoftables{
+  \clearpage
+  \ifHUST@inappendix
+    \addtocounter{chapter}{1}
+    \def\listtablename{\appendixname\,\thechapter\hspace{1em}\HUST@listtablename}
+  \else
+    \def\listtablename{\HUST@listtablename}
+  \fi
+  \phantomsection
+  \ifHUST@inappendix
+    \addcontentsline{toc}{chapter}{\thechapter\hspace{1em}\HUST@listtablename}
+  \else
+    \addcontentsline{toc}{chapter}{\listtablename}
+  \fi
+  \HUST@listoftables
+  \def\listtablename{\HUST@listtablename}
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \section{Other Command}
+% \begin{macro}{\email}
+%    \begin{macrocode}
+\def\email#1{
+  \href{mailto:#1}{\texttt{#1}}
+}
+%    \end{macrocode}
+% \end{macro}
+%    \begin{macrocode}
+%</class>
+%    \end{macrocode}
+%
+% \Finale
+%
+% ^^A Other files
+% \iffalse
+%<*example>
+\documentclass{husttrans}
+\begin{document}
+
+\frontmatter
+%\maketitle
+\tableofcontents
+\listoffigures
+\listoftables
+\mainmatter
+\chapter{基本格式测试}\label{chapter:1}
+
+\section{第一层}\label{sec:1}
+\subsection{第二层}\label{sec:2}
+\subsubsection{第三层}\label{sec:3}
+测试测试测试测试测试测试测试测试测试测试测试测试。
+\footnote{\label{footnote:1}脚注}
+
+\section{字体}
+
+普通\textbf{粗体}\emph{斜体}
+
+\hei{黑体}\kai{楷体}\fangsong{仿宋}
+
+\section{公式}
+
+单个公式，公式引用：\autoref{eq:1}。
+\begin{equation}
+ c^2 = a^2 + b^2 \label{eq:1}
+\end{equation}
+
+多个公式，公式引用：\autoref{eq:2}，\autoref{eq:3}。
+
+\begin{subequations}
+\begin{equation}
+  F = ma \label{eq:2}
+\end{equation}
+\begin{equation}
+  E = mc^2 \label{eq:3}
+\end{equation}
+\end{subequations}
+
+\section{罗列环境}
+
+\begin{enumerate}
+    \item 第一层\label{item:1}
+    \item 第一层
+    \begin{enumerate}
+        \item 第二层\label{item:2}
+        \item 第二层
+        \begin{enumerate}
+            \item 第三层\label{item:3}
+            \item 第三层
+        \end{enumerate}
+    \end{enumerate}
+\end{enumerate}
+
+\begin{description}
+    \item[解释环境]  解释内容
+\end{description}
+
+\chapter{其他格式测试}
+
+\section{代码环境}
+
+\begin{lstlisting}[language=python]
+import os
+
+def main():
+    '''
+    doc here
+    '''
+    print 'hello, world' # Abc
+    print 'hello, 中文' # 中文
+\end{lstlisting}
+
+\section{定律证明环境}
+
+\begin{definition}\label{def:1}
+这是一个定义。
+\end{definition}
+\begin{proposition}\label{proposition:1}
+这是一个命题。
+\end{proposition}
+\begin{axiom}\label{axiom:1}
+这是一个公理。
+\end{axiom}
+\begin{lemma}\label{lemma:1}
+这是一个引理。
+\end{lemma}
+\begin{theorem}\label{theorem:1}
+这是一个定理。
+\end{theorem}
+\begin{proof}\label{proof:1}
+这是一个证明。
+\end{proof}
+
+\section{算法环境}
+
+\begin{algorithm}[H]
+\SetAlgoLined
+\KwData{this text}
+\KwResult{how to write algorithm with \LaTeX2e }
+initialization\;\label{alg_line:1}
+\While{not at end of this document}{
+read current\;
+\eIf{understand}{
+go to next section\;
+current section becomes this one\;
+}{
+go back to the beginning of current section\;
+}
+}
+\caption{How to write algorithms}\label{alg:1}
+\end{algorithm}
+
+\section{表格}
+表格见\autoref{tab:1}。
+
+\begin{table}[!h]
+\centering
+\caption{一个表格}\label{tab:1}
+\begin{tabular}{|c|c|}
+\hline
+a & b \\
+\hline
+c & d \\
+\hline
+\end{tabular}
+\end{table}
+\section{图片}
+图片见\autoref{fig:1}。图片格式支持eps，png，pdf等。多个图片见\autoref{fig:2}，分开引用：\autoref{fig:2-1}，\autoref{fig:2-2}。
+
+\begin{figure}[!h]
+\centering
+\includegraphics[width=.4\textwidth]{fig-example.pdf}
+\caption{一个图片}\label{fig:1}
+\end{figure}
+
+\begin{figure}[!h]
+\centering
+  \begin{subfigure}[b]{0.3\textwidth}
+  \includegraphics[width=\textwidth]{fig-example.pdf}
+  \caption{图片1}\label{fig:2-1}
+  \end{subfigure}
+  ~
+  \begin{subfigure}[b]{0.3\textwidth}
+  \includegraphics[width=\textwidth]{fig-example.pdf}
+  \caption{图片2}\label{fig:2-2}
+  \end{subfigure}
+\caption{多个图片}\label{fig:2}
+\end{figure}
+
+\section{参考文献示例}
+这是一篇中文参考文献\cite{TEXGURU99}；这是一篇英文参考文献\cite{knuth}；同时引用\cite{TEXGURU99,knuth}。
+
+\section[\textbackslash{}autoref 测试]{\texttt{\textbackslash{}autoref} 测试}
+
+\begin{description}
+  \item[公式] \autoref{eq:1}
+  \item[脚注] \autoref{footnote:1}
+  \item[项] \autoref{item:1},\autoref{item:2},\autoref{item:3}
+  \item[图] \autoref{fig:1}
+  \item[表] \autoref{tab:1}
+  \item[附录] \autoref{appendix:1}
+  \item[章] \autoref{chapter:1}
+  \item[小节] \autoref{sec:1},\autoref{sec:2},\autoref{sec:3}
+  \item[算法] \autoref{alg:1},\autoref{alg_line:1}
+  \item[证明环境] \autoref{def:1},\autoref{proposition:1},\autoref{axiom:1},\autoref{lemma:1},\autoref{theorem:1},\autoref{proof:1}
+\end{description}
+
+
+\backmatter
+\bibliography{ref-example}
+\appendix
+\chapter{这是一个附录}\label{appendix:1}
+附录正文。
+\end{document}
+%</example>
+%<*example-bib>
+@BOOK{TEXGURU99,
+  AUTHOR        = "{\TeX}Guru",
+  TITLE         = "{\LaTeXe} Manual",
+  YEAR          = "1999"
+}
+
+@BOOK{knuth,
+  AUTHOR        = "{Donald E. Knuth}",
+  TITLE         = "The \TeX{}book",
+  publisher     = "Addison–Wesley Pub. Co.",
+  address       = "MA",
+  YEAR          = "1984"
+}
+%</example-bib>
+% \fi
+\endinput
