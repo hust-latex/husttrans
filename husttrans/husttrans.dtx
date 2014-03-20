@@ -525,7 +525,50 @@
 %    \end{macrocode}
 %
 % \section{Variables Setting}
-% 
+% \begin{macro}{\title}
+% Commands to set the title.
+%    \begin{macrocode}
+\def\title#1{\gdef\HUST@zhtitle{#1}\hypersetup{pdftitle={#1}}}
+\title{}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\author}
+% Commands to set the author.
+%    \begin{macrocode}
+\def\author#1{\gdef\HUST@zhauthor{#1}}
+\author{}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\translator}
+% Commands to set the translator.
+%    \begin{macrocode}
+\def\translator#1{\gdef\HUST@zhtranslator{#1}\hypersetup{pdfauthor={#1}}}
+\translator{}
+%    \end{macrocode}
+% \end{macro}
+
+%
+% \begin{macro}{\date,\dateformat}
+% A command to set the date and several commands to display date.
+%    \begin{macrocode}
+\def\date#1#2#3{
+  \setdate{#1}{#2}{#3}
+}
+\setdatetoday
+\def\dateformat{~\thedateyear~年~\thedatemonth~月~\thedateday~日}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\supervisor}
+% Commands to set the supervisor.
+%    \begin{macrocode}
+\def\supervisor#1{\gdef\HUST@zhsupervisor{#1}}
+\supervisor{}
+%    \end{macrocode}
+% \end{macro}
+
 %
 % \section{Localization}\label{sec:Localization}
 % Chinese localization.
@@ -572,6 +615,10 @@
 %
 % Internal variables.
 %    \begin{macrocode}
+\long\def\HUST@zhtitletitle{华中科技大学\\毕业设计（论文）\\[0.8cm]外文文献翻译}
+\def\HUST@zhauthortitle{原文作者}
+\def\HUST@zhtranslatortitle{翻译作者}
+\def\HUST@zhsupervisortitle{指导教师}
 %    \end{macrocode}
 %
 % Set |\listfigurename| and |\listtablename|.
@@ -876,6 +923,61 @@
 %    \end{macrocode}
 % \end{macro}
 %
+% Title page.
+%    \begin{macrocode}
+\def\HUST@titlepage{
+  \begin{center}
+  \null
+  \vskip 2cm
+  {\LARGE \HUST@zhtitletitle}\\[0.5cm]
+  \rule{\linewidth}{0.5mm}\\[0.55cm]
+  {\LARGE \bfseries \sffamily \HEI \HUST@zhtitle}\\[0.35cm]
+  \rule{\linewidth}{0.5mm}\\[3.5cm]
+  \begin{minipage}[t]{0.8\textwidth}
+  \TurnOffTabFontSetting
+  \Large
+  \setlength{\extrarowheight}{5pt}
+  \begin{tabular}{r@{：}l}
+    \parbox[t][][t]{6em}{\raggedleft \emph{\HUST@zhauthortitle}} &
+    \parbox[t][][t]{15em}{\HUST@zhauthor}
+    \\
+    \parbox[t][][t]{6em}{\raggedleft \emph{\HUST@zhtranslatortitle}} &
+    \parbox[t][][t]{15em}{\HUST@zhtranslator}
+    \ifthenelse{\equal{\HUST@zhsupervisor}{}}{}{
+    \\
+    \parbox[t][][t]{6em}{\raggedleft \emph{\HUST@zhsupervisortitle}} &
+    \parbox[t][][t]{15em}{\HUST@zhsupervisor}
+    }
+  \end{tabular}
+  \TurnOnTabFontSetting
+  \end{minipage}
+  \vfill
+  {\Large \dateformat}
+  \end{center}
+}
+%    \end{macrocode}
+%
+% \begin{macro}{\maketitle,\makecover}
+% Commands to generate title page.
+%    \begin{macrocode}
+\def\maketitle{
+  \begingroup
+  \hypersetup{allcolors=black}
+  \let\HUST@oldthepage\thepage
+  \def\thepage{封面}
+  \begin{titlepage}
+    \thispagestyle{empty}
+    \HUST@titlepage
+  \end{titlepage}
+  \let\thepage\HUST@oldthepage
+  \setcounter{page}{1}
+  \endgroup
+}
+\let\makecover\maketitle
+%    \end{macrocode}
+% \end{macro}
+
+%
 % \begin{macro}{\tableofcontents}
 % A command to generate table of contents.
 %    \begin{macrocode}
@@ -1012,10 +1114,17 @@
 % \iffalse
 %<*example>
 \documentclass{husttrans}
+
+\title{外文翻译\LaTeX 模板使用示例}
+\author{许铖}
+\translator{许铖}
+\supervisor{黑晓军\hspace{1em}副教授}
+\date{2014}{3}{1}
+
 \begin{document}
 
 \frontmatter
-%\maketitle
+\maketitle
 \tableofcontents
 \listoffigures
 \listoftables
