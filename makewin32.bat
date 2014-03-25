@@ -41,7 +41,7 @@ lualatex husttrans.ins
 popd
 goto :exit
 
-example:
+:example
 call :unpack
 pushd husttrans
 lualatex -shell-escape -8bit husttrans-example
