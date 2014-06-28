@@ -1,15 +1,9 @@
 husttrans
 ==========
 
->   中文版[点击这里](https://github.com/xu-cheng/husttrans/blob/master/README.zh-cn.md)。
+>   中文版[点击这里](https://github.com/hust-latex/husttrans/blob/master/README.zh-cn.md)。
 
-An Unofficial Translation Template in LaTeX for [Huazhong University of Science and Technology](http://www.hust.edu.cn). This template is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-
-This project is part of [hust-latex-template](https://github.com/xu-cheng/hust-latex-template).
-
-If this template is useful for you, you might want to buy me a cup of coffee to keep me fresh. Thanks! :)
-
-[![Buy me a cup of coffee via PayPal](https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=xucheng@me.com&lc=US&item_name=Donate%20this%20project&item_number=husttrans&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHostedGuest)
+An Unofficial Translation Template in LaTeX for [Huazhong University of Science and Technology](http://www.hust.edu.cn). See other templates in <http://hust-latex.github.io>.
 
 ## Requirement
 
@@ -60,14 +54,20 @@ Then copy following files from directory `husttrans` into your TeX project root 
 
 **Important : This template can only be compiled by XeLaTeX or LuaLaTeX[Recommend].**
 
-* Manual: See [husttrans.pdf](https://github.com/xu-cheng/husttrans/raw/master/husttrans/husttrans.pdf).
-* Example: See [husttrans-example.pdf](https://github.com/xu-cheng/husttrans/raw/master/husttrans/husttrans-example.pdf).
+* Manual: See [husttrans.pdf](https://github.com/hust-latex/husttrans/raw/master/husttrans/husttrans.pdf).
+* Example: See [husttrans-example.pdf](https://github.com/hust-latex/husttrans/raw/master/husttrans/husttrans-example.pdf).
+
+# Disclaimer
+
+This template is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
 ## License
 
-LPPL v1.3 is chosen to be the license of the project. Use as you desire.
+Original works are done by [Xu Cheng](https://github.com/xu-cheng). LPPL v1.3 is chosen to be the license of the project. Use as you desire.
 ```
 Copyright (C) 2013-2014 by Xu Cheng <xucheng@me.com>
+              2014      by hust-latex <https://github.com/hust-latex>
+
 
 This work may be distributed and/or modified under the
 conditions of the LaTeX Project Public License, either version 1.3
@@ -79,7 +79,7 @@ version 2005/12/01 or later.
 
 This work has the LPPL maintenance status `maintained'.
 
-The Current Maintainer of this work is Xu Cheng.
+The Current Maintainer of this work is hust-latex Organization.
 
 This work consists of the files husttrans.dtx,
 husttrans.ins and the derived file husttrans.cls 
