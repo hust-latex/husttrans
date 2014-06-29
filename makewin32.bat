@@ -54,8 +54,7 @@ goto :exit
 :doc
 pushd husttrans
 lualatex -shell-escape -8bit husttrans.dtx
-makeindex -q -s l3doc.ist husttrans
-makeindex -s l3doc.ist  -o husttrans.ind husttrans.idx
+makeindex -s gind.ist  -o husttrans.ind husttrans.idx
 lualatex -shell-escape -8bit husttrans.dtx
 lualatex -shell-escape -8bit husttrans.dtx
 popd

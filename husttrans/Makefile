@@ -30,8 +30,7 @@ doc:husttrans.pdf
 
 husttrans.pdf:husttrans.dtx
 	@$(TEX) $(^F)
-	@$(INDEX) -s l3doc.ist  -o $(basename $(^F)).ind $(basename $(^F)).idx
-	@$(INDEX) -s gglo.ist -o $(basename $(^F)).gls $(basename $(^F)).glo
+	@$(INDEX) -s gind.ist -o $(basename $(^F)).ind $(basename $(^F)).idx
 	@$(TEX) $(^F)
 	@$(TEX) $(^F)
 
