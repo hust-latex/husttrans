@@ -32,7 +32,7 @@
 %<class>\NeedsTeXFormat{LaTeX2e}[1999/12/01]
 %<class>\ProvidesClass{husttrans}
 %<*class>
-[2014/03/01 v1.0 A Translation Template for Huazhong University of Science and Technology]
+[2016/06/01 v1.1 A Translation Template for Huazhong University of Science and Technology]
 %</class>
 %
 %<*driver>
@@ -194,7 +194,7 @@
 %</driver>
 % \fi
 %
-% \CheckSum{765}
+% \CheckSum{775}
 %
 % \iffalse
 %<*!(example-bib)>
@@ -219,6 +219,7 @@
 % \fi
 %
 % \changes{v1.0}{2014/03/01}{Initial version}
+% \changes{v1.1}{2016/06/01}{Fix for TeXLive 2016. Remove \texttt{interfaces} and other problematic package}
 %
 % \GetFileInfo{husttrans.dtx}
 
@@ -1255,7 +1256,7 @@
 \def\thudot{\unskip.}
 \def\thumasterbib{[Master Thesis]}
 \def\thuphdbib{[Doctor Thesis]}
-\bibliographystyle{thubib}
+\bibliographystyle{thuthesis}
 \let\HUST@bibliography\bibliography
 \def\bibliography#1{
   \clearpage
