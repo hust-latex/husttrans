@@ -11,9 +11,9 @@ else
 endif
 
 # Program Defintions
-TEX    = lualatex -shell-escape -8bit 
+TEX    = lualatex -shell-escape -8bit
 BIBTEX = bibtex
-INDEX  = makeindex -q 
+INDEX  = makeindex -q
 RM     = $(if $(filter $(OS_TYPE),Windows),del /f /q ,rm -f )
 
 all:class doc example
@@ -31,6 +31,7 @@ doc:husttrans.pdf
 husttrans.pdf:husttrans.dtx
 	@$(TEX) $(^F)
 	@$(INDEX) -s gind.ist -o $(basename $(^F)).ind $(basename $(^F)).idx
+	@$(INDEX) -s gglo.ist -o $(basename $(^F)).gls $(basename $(^F)).glo
 	@$(TEX) $(^F)
 	@$(TEX) $(^F)
 
